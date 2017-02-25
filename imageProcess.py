@@ -20,8 +20,8 @@ class imageProcess:
 		# dimensions of our images.
 		self.img_width, self.img_height = 150, 150
 
-		self.train_data_dir = '~/Documents/newTrain/train/'
-		self.validation_data_dir = '~/Documents/newTrain/validate'
+		self.train_data_dir = '/home/ryan/Documents/newTrain/train/'
+		self.validation_data_dir = '/home/ryan/Documents/newTrain/validate'
 
 	def trainData(self):
 		'''
@@ -31,11 +31,46 @@ class imageProcess:
 		datagen = ImageDataGenerator(rescale=1./255)
 
 		# automagically retrieve images and their classes for train and validation sets
+		
+		'''
+			The nice thing about both of these functions is that they give the the number of images
+			found and the number of classes
+		'''
 		train_generator = datagen.flow_from_directory(
 			self.train_data_dir,
 			target_size=(self.img_width, self.img_height),
 			batch_size=16,
 			class_mode='binary')
+
+
+		validation_generator = datagen.flow_from_directory(
+			self.validation_data_dir,
+			target_size=(self.img_width, self.img_height),
+			batch_size=32,
+			class_mode='binary')
+
+
+
+		model = Sequential()
+		model.add(Convolution2D(32, 3, 3, input_shape=(img_width, img_height,3)))
+		model.add(Activation('relu'))
+		model.add(MaxPooling2D(pool_size=(2, 2)))
+
+		model.add(Convolution2D(32, 3, 3))
+		model.add(Activation('relu'))
+		model.add(MaxPooling2D(pool_size=(2, 2)))
+
+		model.add(Convolution2D(64, 3, 3))
+		model.add(Activation('relu'))
+		model.add(MaxPooling2D(pool_size=(2, 2)))
+
+		model.add(Flatten())
+		model.add(Dense(64))
+		model.add(Activation('relu'))
+		model.add(Dropout(0.5))
+		model.add(Dense(1))
+		model.add(Activation('sigmoid'))
+
 
 
 if __name__ =='__main__':
