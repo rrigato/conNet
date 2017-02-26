@@ -78,8 +78,8 @@ class imageProcess:
 
 
 		nb_epoch = 5
-		nb_train_samples = 5000
-		nb_validation_samples = 800
+		nb_train_samples = 4000
+		nb_validation_samples = 2000
 
 
 
@@ -89,6 +89,10 @@ class imageProcess:
 			nb_epoch=nb_epoch,
 			validation_data=validation_generator,
 			nb_val_samples=nb_validation_samples)
+		
+		model.save_weights('firstModel.h5')
+		
+		model.evaluate_generator(validation_generator, nb_validation_samples)
 
 
 
